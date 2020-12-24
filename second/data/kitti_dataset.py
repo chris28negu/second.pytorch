@@ -83,7 +83,7 @@ class KittiDataset(Dataset):
                 bbox[j, :2] = np.maximum(bbox[j, :2], [0, 0])
                 anno["bbox"].append(bbox[j])
                 # convert center format to kitti format
-                # box3d_lidar[j, 2] -= box3d_lidar[j, 5] / 2
+                #box3d_lidar[j, 2] -= box3d_lidar[j, 5] / 2
                 anno["alpha"].append(
                     -np.arctan2(-box3d_lidar[j, 1], box3d_lidar[j, 0]) +
                     box3d_camera[j, 6])
@@ -290,7 +290,7 @@ def kitti_anno_to_label_file(annos, folder):
             label_lines.append(label_line)
         label_file = folder / f"{kitti.get_image_index_str(image_idx)}.txt"
         label_str = '\n'.join(label_lines)
-        with open(label_file, 'w') as f:
+        with open(label_file, 'w+') as f:
             f.write(label_str)
 
 

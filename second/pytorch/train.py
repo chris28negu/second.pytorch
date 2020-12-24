@@ -12,6 +12,8 @@ import torch
 from google.protobuf import text_format
 
 import second.data.kitti_common as kitti
+import second.data.kitti_dataset as kitti_dataset
+
 import torchplus
 from second.builder import target_assigner_builder, voxel_builder
 from second.core import box_np_ops
@@ -525,6 +527,10 @@ def evaluate(config_path,
         bar.print_bar()
         if measure_time:
             t2 = time.time()
+    
+    #11/25/2020 Bo - added method to generate kitti labels
+    annos = eval_dataset.dataset.convert_detection_to_kitti_annos(detections) 
+    kitti_dataset.kitti_anno_to_label_file(annos, result_path / "pred")
 
     sec_per_example = len(eval_dataset) / (time.time() - t)
     print(f'generate label finished({sec_per_example:.2f}/s). start eval:')
